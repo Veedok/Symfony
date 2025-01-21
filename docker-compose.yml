@@ -39,6 +39,8 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - dev-network
+    ports:
+      - "3306:3306"
 
 networks:
   dev-network:
