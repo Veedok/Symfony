@@ -1,1 +1,1 @@
-# Symfony
+**app/config/packages/web_profiler.yaml** toolbar false

@@ -1,3 +1,36 @@
-body {
+.wrapper {
+    width: 1450px;
+    height: 100%;
+    margin: 0 auto;
     background-color: skyblue;
+    min-height: 959px;
+}
+.custom_name {
+    max-width: 50px;
+}
+.loginForm {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    min-height: 330px;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 20px;
+}
+.registrForm form {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    min-height: 330px;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 20px;
+}
+.btnWidth{
+    width: 100%;
+    margin-top: 10px;
+    min-height: 50px;
+}
+.headerCenter{
+    margin: 0 auto;
 }
