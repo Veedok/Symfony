@@ -34,3 +34,7 @@
 .headerCenter{
     margin: 0 auto;
 }
+
+.modalMy {
+    display: none;
+}

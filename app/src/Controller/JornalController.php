@@ -13,6 +13,6 @@ class JornalController extends AbstractController
     public function list(): Response
     {
 
-        return new Response('Hello World');
+        return $this->render('journal/journal.html.twig');
     }
 }

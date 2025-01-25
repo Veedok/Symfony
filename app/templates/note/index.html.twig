@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Note index{% endblock %}
+
+{% block body %}
+    <h1>Note index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Body</th>
+                <th>CreateDt</th>
+                <th>UpdateDt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for note in notes %}
+            <tr>
+                <td>{{ note.id }}</td>
+                <td>{{ note.body }}</td>
+                <td>{{ note.createDt ? note.createDt|date('Y-m-d') : '' }}</td>
+                <td>{{ note.updateDt ? note.updateDt|date('Y-m-d') : '' }}</td>
+                <td>
+                    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalToggleLabel">Модалка 1</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ form_start(note.form) }}
+                                    {{ form_widget(note.form) }}
+                                    <button class="btn">{{ button_label|default('Save') }}</button>
+                                    {{ form_end(note.form) }}
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Изменить</a>
+{#                    <a href="{{ path('app_note_show', {'id': note.id}) }}">show</a>#}
+{#                    <a href="{{ path('app_note_edit', {'id': note.id}) }}">edit</a>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_note_new') }}">Create new</a>
+{% endblock %}
