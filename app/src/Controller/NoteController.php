@@ -86,10 +86,11 @@ final class NoteController extends AbstractController
             if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                $dir = Clock::get()->now()->format('dmY');
+                $newFilename = $dir . '/' . md5($safeFilename) . '.' . $file->guessExtension();
                 try {
                     $file->move(
-                        $this->getParameter('file_directory'),
+                        $this->getParameter('file_directory') . '/' . $dir,
                         $newFilename
                     );
                 } catch (FileException $e) {

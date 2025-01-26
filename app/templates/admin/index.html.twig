@@ -31,7 +31,7 @@
                     <div class="sphere red"></div>
                 {% endif %}
             </td>
-            <td>
+            <td class="adminTD">
                 {% if 'ROLE_USER' in user.getRoles %}
                     <a class="btn btn-primary adminBTN" href="{{ path('admin_user_edit', {'id': user.id, 'action': 'block'}) }}">Заблокировать</a>
                 {% else %}

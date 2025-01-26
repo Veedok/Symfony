@@ -94,3 +94,6 @@
     min-width: 100px;
     margin: 10px;
 }
+.adminTD{
+    max-width: 550px;
+}
