@@ -5,9 +5,11 @@
     background-color: skyblue;
     min-height: 959px;
 }
+
 .custom_name {
     max-width: 50px;
 }
+
 .loginForm {
     max-width: 300px;
     display: flex;
@@ -17,6 +19,7 @@
     margin: 0 auto;
     padding: 20px;
 }
+
 .registrForm form {
     max-width: 300px;
     display: flex;
@@ -26,11 +29,71 @@
     margin: 0 auto;
     padding: 20px;
 }
-.btnWidth{
+
+.btnWidth {
     width: 100%;
     margin-top: 10px;
     min-height: 50px;
 }
-.headerCenter{
+
+.headerCenter {
     margin: 0 auto;
+}
+
+.modalMy {
+    display: none;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: lawngreen;
+}
+
+.sphere {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 500%;
+    position: relative;
+    box-shadow: inset -1px -1px 10px #000, 1px 1px 2px black, inset 0px 0px 1px black;
+    display: inline-block;
+    margin: 5%;
+}
+
+.sphere::after {
+    background-color: rgba(255, 255, 255, 0.3);
+    content: '';
+    height: 45%;
+    width: 12%;
+    position: absolute;
+    top: 4%;
+    left: 15%;
+    border-radius: 50%;
+    transform: rotate(40deg);
+}
+
+.adminBTN {
+    min-width: 250px;
+}
+
+.head {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.logout{
+    max-height: 40px;
+}
+
+.noteBTN{
+    min-width: 100px;
+    margin: 10px;
+}
+.adminTD{
+    max-width: 550px;
 }

@@ -36,6 +36,7 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/journal, roles: ROLE_USER }
+         - { path: ^/note, roles: ROLE_USER }
 
 when@test:
     security:

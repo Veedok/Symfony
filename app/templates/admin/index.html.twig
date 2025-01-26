@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+<div class="head">
+    <h1>Users</h1>
+    <a class="btn btn-primary logout" href="{{ path('app_logout') }}">Выйти</a>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Login</th>
+        <th>Posts</th>
+        <th>Blocked</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.login }}</td>
+            <td>{{ user.getNotes.toArray|length }}</td>
+            <td>
+                {% if 'ROLE_USER' in user.getRoles %}
+                    <div class="sphere green"></div>
+                {% else %}
+                    <div class="sphere red"></div>
+                {% endif %}
+            </td>
+            <td class="adminTD">
+                {% if 'ROLE_USER' in user.getRoles %}
+                    <a class="btn btn-primary adminBTN" href="{{ path('admin_user_edit', {'id': user.id, 'action': 'block'}) }}">Заблокировать</a>
+                {% else %}
+                    <a class="btn btn-primary adminBTN"
+                       href="{{ path('admin_user_edit', {'id': user.id, 'action': 'unblock'}) }}">Разблокировать</a>
+                {% endif %}
+                {% if user.getNotes.toArray|length > 0 %}
+                    <a class="btn btn-primary adminBTN" href="{{ path('admin_del_data', {'id': user.id,}) }}">Удалить записи
+                        пользователя</a>
+                {% else %}
+                    <a class="btn btn-primary adminBTN" href="#" onclick="return false">У пользователя нет записей</a>
+                {% endif %}
+            </td>
+
+
+        </tr>
+    {% endfor %}
+    </tbody>
+    {% endblock %}
