@@ -7,6 +7,7 @@ services:
       - "80:80"
     volumes:
       - ./app:/var/www/symfony
+#      - ./storage:/var/www/symfony/public/storage
       - ./conf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-gd.ini
       - ./conf/php.ini-development:/usr/local/etc/php/php.ini-development
     depends_on:
@@ -27,6 +28,7 @@ services:
       - app
     networks:
       - dev-network
+    restart: always
   db:
     image: mariadb:latest
     restart: always

@@ -8,9 +8,11 @@ use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Clock\Clock;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/note')]
 final class NoteController extends AbstractController
@@ -29,7 +31,7 @@ final class NoteController extends AbstractController
     }
 
     #[Route('/new', name: 'app_note_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $note = new Note();
         $form = $this->createForm(NoteType::class, $note);
@@ -37,6 +39,22 @@ final class NoteController extends AbstractController
         $note->setCreateDt(Clock::get()->now());
         $note->setUserId($this->getUser());
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            if ($file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $dir = Clock::get()->now()->format('dmY');
+                $newFilename = $dir . '/' . md5($safeFilename) . '.' . $file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('file_directory') . '/' . $dir,
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    /** TODO поправить ошибку при загрузке */
+                }
+                $note->setFilename($newFilename);
+            }
             $entityManager->persist($note);
             $entityManager->flush();
 
@@ -58,12 +76,28 @@ final class NoteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_note_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Note $note, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Note $note, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
         $note->setUpdateDt(Clock::get()->now());
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            if ($file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('file_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $c = 1;
+                    /** TODO поправить ошибку при загрузке */
+                }
+                $note->setFilename($newFilename);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_note_index', [], Response::HTTP_SEE_OTHER);

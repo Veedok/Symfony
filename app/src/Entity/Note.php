@@ -27,6 +27,9 @@ class Note
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userId = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $filename = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,6 +87,17 @@ class Note
     {
         $this->userId = $userId;
 
+        return $this;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): self
+    {
+        $this->filename = $filename;
         return $this;
     }
 }
