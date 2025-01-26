@@ -20,7 +20,7 @@ final class NoteController extends AbstractController
     #[Route(name: 'app_note_index', methods: ['GET'])]
     public function index(NoteRepository $noteRepository): Response
     {
-        $notes = $noteRepository->findAll();
+        $notes = $noteRepository->findBy(['userId' => $this->getUser()]);
         array_walk($notes, function (Note &$note) {
             $note->form = $this->createForm(NoteType::class, $note,
                 ['action' => $this->generateUrl('app_note_edit', ['id' => $note->getId()])])->createView();

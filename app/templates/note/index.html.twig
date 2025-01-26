@@ -3,8 +3,10 @@
 {% block title %}Note index{% endblock %}
 
 {% block body %}
-    <h1>Note index</h1>
-
+    <div class="head">
+        <h1>Notes</h1>
+        <a class="btn btn-primary logout" href="{{ path('app_logout') }}">Выйти</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -43,7 +45,11 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Изменить</a>
+                    <a class="btn btn-primary noteBTN" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Изменить</a>
+                    <form method="post" action="{{ path('app_note_delete', {'id': note.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ note.id) }}">
+                        <button class="btn btn-primary noteBTN">Удалить</button>
+                    </form>
 {#                    <a href="{{ path('app_note_show', {'id': note.id}) }}">show</a>#}
 {#                    <a href="{{ path('app_note_edit', {'id': note.id}) }}">edit</a>#}
                 </td>
@@ -55,5 +61,5 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('app_note_new') }}">Create new</a>
+    <a class="btn btn-primary noteBTN" href="{{ path('app_note_new') }}">Create new</a>
 {% endblock %}
