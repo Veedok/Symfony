@@ -12,6 +12,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 /** Контроллер авторизации */
 class LoginController extends AbstractController
 {
+    /**
+     * Главная страница запрашивает сразу авторизацию, разные роли переводят на разные страницы
+     * @param AuthenticationUtils $authenticationUtils
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @return Response
+     */
     #[Route(path: '/', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, AuthorizationCheckerInterface $authorizationChecker): Response
     {
@@ -30,6 +36,10 @@ class LoginController extends AbstractController
         ]);
     }
 
+    /**
+     * Метод для выхода из аккаунта
+     * @return void
+     */
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

@@ -6,7 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /** Сервис для работы админской части */
-class AdminService
+readonly class AdminService
 {
 
     /**
@@ -15,8 +15,8 @@ class AdminService
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        private readonly UserRepository         $users,
-        private readonly EntityManagerInterface $entityManager
+        private UserRepository         $users,
+        private EntityManagerInterface $entityManager
     )
     {
     }

@@ -11,8 +11,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+/** Контролер для регистрации пользователей */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Метод регистрации пользователей
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -22,18 +30,12 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
-
-            // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setRoles(['ROLE_USER']);
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
-
             return $this->redirectToRoute('journal');
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
