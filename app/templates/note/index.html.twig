@@ -25,7 +25,7 @@
                 <td class="bodyTD">{{ note.body }}</td>
                 <td>{{ note.createDt ? note.createDt|date('Y-m-d') : '' }}</td>
                 <td>{{ note.updateDt ? note.updateDt|date('Y-m-d') : '' }}</td>
-                <td>{% if note.filename %}<a href="{{ asset('storage/brochures/' ~ note.filename) }}" download="{{ asset('storage/brochures/' ~ note.filename) }}">View brochure (PDF)</a>{% else %} Нет файла {% endif %}</td>
+                <td>{% if note.filename %}<a href="{{ asset('/note/brochures/' ~ note.filename) }}" download>View brochure (PDF)</a>{% else %} Нет файла {% endif %}</td>
                 <td>
                     <div class="modal fade" id="exampleModalToggle{{ note.id }}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
@@ -37,7 +37,7 @@
                                 <div class="modal-body">
                                     {{ form_start(note.form) }}
                                     {{ form_widget(note.form) }}
-                                    <button class="btn">{{ button_label|default('Save') }}</button>
+                                    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
                                     {{ form_end(note.form) }}
                                 </div>
                                 <div class="modal-footer">
