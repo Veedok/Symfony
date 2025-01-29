@@ -34,7 +34,7 @@ class RegistrationController extends AbstractController
             $user->setRoles(['ROLE_USER']);
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('journal');
+            return $this->redirectToRoute('app_note_index');
         }
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,

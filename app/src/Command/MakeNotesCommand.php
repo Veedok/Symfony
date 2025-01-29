@@ -15,12 +15,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/** Команда для наполнения БД записями пользователей */
 #[AsCommand(
     name: 'app:make:notes',
     description: 'Add a short description for your command',
 )]
 class MakeNotesCommand extends Command
 {
+    /**
+     * Определение зависимостей
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $users
+     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepository         $users,
@@ -29,6 +35,10 @@ class MakeNotesCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * Конфигурация
+     * @return void
+     */
     protected function configure(): void
     {
         $this
@@ -37,6 +47,12 @@ class MakeNotesCommand extends Command
         ;
     }
 
+    /**
+     * Метод для создания записей в БД
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
