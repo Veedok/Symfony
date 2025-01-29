@@ -21,7 +21,6 @@ final class AdminController extends AbstractController
     {
     }
 
-
     /**
      * Основной метод отображения
      * @return Response

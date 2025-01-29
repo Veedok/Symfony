@@ -29,7 +29,7 @@ class File
                 $newFilename
             );
         } catch (FileException $e) {
-            /** TODO поправить ошибку при загрузке */
+            /** Тут в идеаль написать логирование или что то подобное */
         }
         return $newFilename;
     }

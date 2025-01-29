@@ -11,8 +11,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
+/** Класс формы для записи */
 class NoteType extends AbstractType
 {
+    /**
+     * Создание формы записи
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -36,6 +43,11 @@ class NoteType extends AbstractType
             ]);
     }
 
+    /**
+     * Изменение свойств формы
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -22,7 +22,7 @@ final class NoteController extends AbstractController
      * Определение зависимостей
      * @param File $file
      */
-    public function __construct(private readonly File $file)
+    public function __construct(private readonly File $file, private readonly \App\Service\Note $noteService)
     {}
 
     /**
@@ -33,13 +33,9 @@ final class NoteController extends AbstractController
     #[Route(name: 'app_note_index', methods: ['GET'])]
     public function index(NoteRepository $noteRepository): Response
     {
-        $notes = $noteRepository->findBy(['userId' => $this->getUser()]);
-        array_walk($notes, function (Note &$note) {
-            $note->form = $this->createForm(NoteType::class, $note,
-                ['action' => $this->generateUrl('app_note_edit', ['id' => $note->getId()])])->createView();
-        });
+        $n = $this->noteService->getNotesFoRender($this->getUser());
         return $this->render('note/index.html.twig', [
-            'notes' => $notes,
+            'notes' => $n
         ]);
     }
 
@@ -51,27 +47,13 @@ final class NoteController extends AbstractController
      * @return Response
      */
     #[Route('/new', name: 'app_note_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function new(Request $request): Response
     {
-        $note = new Note();
-        $form = $this->createForm(NoteType::class, $note);
-        $form->handleRequest($request);
-        $note->setCreateDt(Clock::get()->now());
-        $note->setUserId($this->getUser());
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('file')->getData();
-            if ($file) {
-                $note->setFilename($this->file->save($file, $this->getParameter('file_directory'), $slugger));
-            }
-            $entityManager->persist($note);
-            $entityManager->flush();
-
+        $data = $this->noteService->saveNote($this->getUser(),$request, $this->getParameter('file_directory'));
+        if (empty($data)) {
             return $this->redirectToRoute('app_note_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('note/new.html.twig', [
-            'note' => $note,
-            'form' => $form,
-        ]);
+        return $this->render('note/new.html.twig', $data);
     }
 
     /**
@@ -98,22 +80,11 @@ final class NoteController extends AbstractController
     #[Route('/{id}/edit', name: 'app_note_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Note $note, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        $form = $this->createForm(NoteType::class, $note);
-        $form->handleRequest($request);
-        $note->setUpdateDt(Clock::get()->now());
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('file')->getData();
-            if ($file) {
-                $note->setFilename($this->file->save($file, $this->getParameter('file_directory'), $slugger));
-            }
-            $entityManager->flush();
-
+        $data = $this->noteService->saveNote($this->getUser(),$request, $this->getParameter('file_directory'), $note);
+        if (empty($data)) {
             return $this->redirectToRoute('app_note_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('note/edit.html.twig', [
-            'note' => $note,
-            'form' => $form,
-        ]);
+        return $this->render('note/new.html.twig', $data);
     }
 
     /**

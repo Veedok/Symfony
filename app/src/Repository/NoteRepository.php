@@ -7,10 +7,15 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Класс репозитория записи
  * @extends ServiceEntityRepository<Note>
  */
 class NoteRepository extends ServiceEntityRepository
 {
+    /**
+     * Конструктор
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Note::class);
